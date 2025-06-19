@@ -20,7 +20,18 @@ function ajouterModule() {
   const efmSur20 = (efm / 40) * 20;
   const moyenne = (cc1 * 0.0825 + cc2 * 0.0825 + cc3 * 0.0825 + cc4 * 0.0825 + efmSur20 * 0.67);
 
-  modules.push({ nom, cc1, cc2, cc3, cc4, efm, coef, moyenne });
+const module = {
+  nom: nom,
+  cc1: cc1,
+  cc2: cc2,
+  cc3: cc3,
+  cc4: cc4,
+  efm: efm,
+  coef: coef,
+  moyenne: moyenne
+};
+
+modules.push(module);
   afficherModules();
   viderFormulaire();
 }
@@ -32,22 +43,22 @@ function afficherModules() {
   const tbody = document.getElementById("modulesTable");
   tbody.innerHTML = "";
 
-  modules.forEach((m, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${m.nom}</td>
-      <td>${m.cc1}</td>
-      <td>${m.cc2}</td>
-      <td>${m.cc3}</td>
-      <td>${m.cc4}</td>
-      <td>${m.efm}</td>
-      <td>${m.coef}</td>
+  modules.forEach((module, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${module.nom}</td>
+      <td>${module.cc1}</td>
+      <td>${module.cc2}</td>
+      <td>${module.cc3}</td>
+      <td>${module.cc4}</td>
+      <td>${module.efm}</td>
+      <td>${module.coef}</td>
       <td class="actions">
         <button onclick="chargerModule(${index})">Modifier</button>
         <button onclick="supprimerModule(${index})">Supprimer</button>
       </td>
     `;
-    tbody.appendChild(row);
+    tbody.appendChild(tr);
   });
 }
 
@@ -65,14 +76,14 @@ function afficherModules() {
   }
 
   function chargerModule(index) {
-    const m = modules[index];
-    document.getElementById("moduleName").value = m.nom;
-    document.getElementById("cc1").value = m.cc1;
-    document.getElementById("cc2").value = m.cc2;
-    document.getElementById("cc3").value = m.cc3;
-    document.getElementById("cc4").value = m.cc4;
-    document.getElementById("efm").value = m.efm;
-    document.getElementById("coef").value = m.coef;
+    const module = modules[index];
+    document.getElementById("moduleName").value = module.nom;
+    document.getElementById("cc1").value = module.cc1;
+    document.getElementById("cc2").value = module.cc2;
+    document.getElementById("cc3").value = module.cc3;
+    document.getElementById("cc4").value = module.cc4;
+    document.getElementById("efm").value = module.efm;
+    document.getElementById("coef").value = module.coef;
     indexEnCours = index;
     document.getElementById("modifierBtn").style.display = "inline-block";
   }
@@ -115,9 +126,9 @@ function modifierModule() {
     let total = 0,
     totalCoef = 0;
 
-    modules.forEach(m => {
-      total += m.moyenne * m.coef;
-      totalCoef += m.coef;
+    modules.forEach(module => {
+      total += module.moyenne * module.coef;
+      totalCoef += module.coef;
     });
 
     const moyenneAnnuelle = total / totalCoef;
